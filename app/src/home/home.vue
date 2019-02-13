@@ -17,7 +17,7 @@
 
 <script>
 import EventsList from './events-list.vue';
-import Notification from '../components/notification.vue';
+import Notification from '../commons/components/notification.vue';
 
 export default {
   components: {

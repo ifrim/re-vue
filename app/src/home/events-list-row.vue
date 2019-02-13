@@ -2,7 +2,7 @@
   <div class="event-row">
     <div class="event-name">{{event.name}}</div>
     <div class="event-subtitle">
-      <span>From <b>{{event.startDate}}</b> to <b>{{event.endDate}}</b></span>
+      <span>From <b>{{event.startDate | date}}</b> to <b>{{event.endDate | date}}</b></span>
       <span>location <b>{{event.location}}</b></span>
       <span>type <b>{{event.type}}</b></span>
     </div>
