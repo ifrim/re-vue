@@ -46,20 +46,6 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-
-    > button {
-      width: 100px;
-      height: 30px;
-      font-size: 16px;
-      border-radius: 4px;
-      background-color: navy;
-      color: white;
-      border: none;
-
-      &:active {
-        color: orange;
-      }
-    }
   }
 }
 </style>

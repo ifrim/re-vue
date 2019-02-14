@@ -15,3 +15,5 @@ export const NOTIFICATION = {
 };
 
 export const NOTIFICATION_DELAY = 5000;
+
+export const THOUSAND_SEPARATOR = ',';

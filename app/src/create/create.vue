@@ -11,6 +11,7 @@
 <script>
 import { NOTIFICATION } from '../state/static-data.js';
 import CreateEventForm from './form.vue';
+import { validate } from './validations.js';
 
 export default {
   components: {
@@ -21,6 +22,8 @@ export default {
       state: this.app.state,
       goToHome: () => this.$router.push('/'),
       onSave: (data) => {
+        let errors = validate(data);
+        if (errors) return errors;
         this.app.addEvent(data);
         this.goToHome();
         this.app.notify('Event added successfully!', NOTIFICATION.SUCCESS);

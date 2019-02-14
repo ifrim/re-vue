@@ -1,11 +1,23 @@
 <template>
   <form>
-    <label>
-      <span>Name</span>
+    <div
+      class="errors"
+      v-if="errors"
+    >
+      <div
+        class="error-message"
+        v-for="error in errors.messages"
+        :key="error"
+      >
+        {{error}}
+      </div>
+    </div>
+    <label :class="{error: isError('name')}">
+      <span>Name <FormFieldRequired /></span>
       <input type="text" v-model="name" />
     </label>
-    <label>
-      <span>Location</span>
+    <label :class="{error: isError('location')}">
+      <span>Location <FormFieldRequired /></span>
       <select v-model="location">
         <option value="">Select&hellip;</option>
         <option
@@ -17,16 +29,16 @@
         </option>
       </select>
     </label>
-    <label>
-      <span>Start Date</span>
+    <label :class="{error: isError('startDate')}">
+      <span>Start Date <FormFieldRequired /></span>
       <input type="date" v-model="startDate" />
     </label>
-    <label>
-      <span>End Date</span>
+    <label :class="{error: isError('endDate')}">
+      <span>End Date <FormFieldRequired /></span>
       <input type="date" v-model="endDate" />
     </label>
-    <label>
-      <span>Type</span>
+    <label :class="{error: isError('type')}">
+      <span>Type <FormFieldRequired /></span>
       <label
         v-for="t in types"
         :key="t"
@@ -61,9 +73,12 @@
 
 <script>
 import { EVENT_TYPES, locations } from '../state/static-data.js';
+import FormFieldRequired from '../commons/components/form-field-required.vue';
 
 export default {
-  name: 'CreateEventForm',
+  components: {
+    FormFieldRequired
+  },
   data: function () {
     return {
       name: '',
@@ -75,15 +90,16 @@ export default {
       otherType: '',
       types: EVENT_TYPES,
       requiresInvitation: false,
-      description: ''
+      description: '',
+      errors: null
     };
   },
   methods: {
-    cancel: function () {
+    cancel() {
       this.onCancel();
     },
-    save: function (...args) {
-      this.onSave({
+    save(...args) {
+      this.errors = this.onSave({
         name: this.name,
         startDate: this.startDate,
         endDate: this.endDate,
@@ -92,6 +108,10 @@ export default {
         requiresInvitation: this.requiresInvitation,
         description: this.description
       });
+    },
+    isError(field) {
+      if (!this.errors) return false;
+      return this.errors.items.has(field);
     }
   },
   props: ['onCancel', 'onSave']
@@ -103,6 +123,10 @@ export default {
     text-align: left;
     max-width: 1024px;
 
+    .error-message {
+      color: red;
+    }
+
     label {
       display: block;
       margin-top: 20px;
@@ -111,9 +135,23 @@ export default {
         margin-top: 0;
       }
 
+      &.error {
+        color: red;
+
+        > input,
+        > select,
+        > textarea {
+          border-color: red;
+        }
+      }
+
       > span {
         display: inline-block;
       }
+    }
+
+    button + button {
+      margin-left: 20px;
     }
   }
 </style>
