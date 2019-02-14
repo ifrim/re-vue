@@ -79,7 +79,7 @@ export default {
   components: {
     FormFieldRequired
   },
-  data: function () {
+  data () {
     return {
       name: '',
       startDate: '',
@@ -95,10 +95,10 @@ export default {
     };
   },
   methods: {
-    cancel() {
+    cancel () {
       this.onCancel();
     },
-    save(...args) {
+    save () {
       this.errors = this.onSave({
         name: this.name,
         startDate: this.startDate,
@@ -109,7 +109,7 @@ export default {
         description: this.description
       });
     },
-    isError(field) {
+    isError (field) {
       if (!this.errors) return false;
       return this.errors.items.has(field);
     }

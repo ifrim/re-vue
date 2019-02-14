@@ -17,7 +17,7 @@ export default {
   components: {
     CreateEventForm
   },
-  data: function () {
+  data () {
     return {
       state: this.app.state,
       goToHome: () => this.$router.push('/'),

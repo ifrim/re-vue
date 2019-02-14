@@ -6,7 +6,7 @@ export const EVENT_TYPES = {
   NETWORKING: 'Networking'
 };
 
-export let locations = ['Munich', 'London', 'Madrid', 'Dessel'];
+export let locations = ['Munich', 'London', 'Madrid', 'Dessel', 'Paris'];
 
 export const NOTIFICATION = {
   ERROR: 'error',

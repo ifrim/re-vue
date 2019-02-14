@@ -11,11 +11,13 @@
     </header>
     <EventsList
       :events="state.events"
+      :locations="locations"
     />
   </div>
 </template>
 
 <script>
+import { locations } from '../state/static-data.js';
 import EventsList from './events-list.vue';
 import Notification from '../commons/components/notification.vue';
 
@@ -24,13 +26,14 @@ export default {
     EventsList,
     Notification
   },
-  data: function () {
+  data () {
     return {
-      state: this.app.state
+      state: this.app.state,
+      locations
     };
   },
   methods: {
-    goToCreate: function () {
+    goToCreate () {
       this.$router.push('create');
     }
   },
