@@ -1,22 +1,23 @@
 <template>
   <div class="home">
     <Notification
-      v-if="state.notification"
-      :type="state.notification.type"
+      v-if="notification"
+      :type="notification.type"
     >
-      {{state.notification.message}}
+      {{notification.message}}
     </Notification>
     <header>
       <button @click="goToCreate">New Event</button>
     </header>
     <EventsList
-      :events="state.events"
+      :events="events"
       :locations="locations"
     />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import { locations } from '../state/static-data.js';
 import EventsList from './events-list.vue';
 import Notification from '../commons/components/notification.vue';
@@ -28,7 +29,6 @@ export default {
   },
   data () {
     return {
-      state: this.app.state,
       locations
     };
   },
@@ -37,7 +37,7 @@ export default {
       this.$router.push('create');
     }
   },
-  props: ['app']
+  computed: mapState(['events', 'notification'])
 };
 </script>
 

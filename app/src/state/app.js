@@ -1,4 +1,8 @@
+import Vue from 'vue';
+import Vuex from 'vuex';
 import { NOTIFICATION_DELAY } from './static-data.js';
+
+Vue.use(Vuex);
 
 let events = [
   {
@@ -44,22 +48,34 @@ let events = [
 ];
 let notificationTimeoutId;
 
-export default {
+let store = new Vuex.Store({
   state: {
     events,
     notification: null
   },
-  addEvent (eventData) {
-    this.state.events.push({ id: uniqueId(), ...eventData });
+  mutations: {
+    addEvent (state, eventData) {
+      state.events.push({ id: uniqueId(), ...eventData });
+    },
+    addNotification (state, { message, type }) {
+      state.notification = { message, type };
+    },
+    dismissNotification (state) {
+      state.notification = null;
+    }
   },
-  notify (message, type) {
-    clearTimeout(notificationTimeoutId);
-    this.state.notification = { message, type };
-    notificationTimeoutId = setTimeout(() => {
-      this.state.notification = null;
-    }, NOTIFICATION_DELAY);
+  actions: {
+    notify ({ commit }, { message, type }) {
+      clearTimeout(notificationTimeoutId);
+      commit('addNotification', { message, type });
+      notificationTimeoutId = setTimeout(() => {
+        commit('dismissNotification');
+      }, NOTIFICATION_DELAY);
+    }
   }
-};
+});
+
+export default store;
 
 function uniqueId () {
   if (!uniqueId.id) uniqueId.id = 1;
