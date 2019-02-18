@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form novalidate="novalidate">
     <div
       class="errors"
       v-if="errors"
@@ -12,61 +12,56 @@
         {{error}}
       </div>
     </div>
-    <label :class="{error: isError('name')}">
-      <span>Name <FormFieldRequired /></span>
-      <input type="text" v-model="name" />
-    </label>
-    <label :class="{error: isError('location')}">
-      <span>Location <FormFieldRequired /></span>
-      <select v-model="location">
-        <option value="">Select&hellip;</option>
-        <option
+    <md-field :class="['md-required', {'md-invalid': isError('name')}]">
+      <label>Name</label>
+      <md-input v-model="name"></md-input>
+    </md-field>
+    <md-field :class="['md-required', {'md-invalid': isError('location')}]">
+      <label for="location">Location</label>
+      <md-select v-model="location">
+        <md-option value="">Select&hellip;</md-option>
+        <md-option
           v-for="loc in locations"
           :value="loc"
           :key="loc"
         >
           {{loc}}
-        </option>
-      </select>
-    </label>
-    <label :class="{error: isError('startDate')}">
-      <span>Start Date <FormFieldRequired /></span>
-      <input type="date" v-model="startDate" />
-    </label>
-    <label :class="{error: isError('endDate')}">
-      <span>End Date <FormFieldRequired /></span>
-      <input type="date" v-model="endDate" />
-    </label>
-    <label :class="{error: isError('type')}">
-      <span>Type <FormFieldRequired /></span>
-      <label
-        v-for="t in types"
-        :key="t"
-      >
-        <input
-          type="radio"
-          :value="t"
-          v-model="type"
-        />
-        <span>{{t}}</span>
-      </label>
-      <label>
-        <input type="radio" value="other" v-model="type" />
-        <span>Other</span>
-        <input type="text" v-model="otherType" />
-      </label>
-    </label>
-    <label>
-      <input type="checkbox" v-model="requiresInvitation" />
-      <span>Requires invitation</span>
-    </label>
-    <label>
-      <span>Description</span>
-      <textarea v-model="description"></textarea>
-    </label>
+        </md-option>
+      </md-select>
+    </md-field>
+    <md-datepicker v-model="startDate" :class="['md-required', {'md-invalid': isError('startDate')}]">
+      <label>Start date</label>
+    </md-datepicker>
+    <md-datepicker v-model="endDate" :class="['md-required', {'md-invalid': isError('endDate')}]">
+      <label>End date</label>
+    </md-datepicker>
     <div>
-      <button @click="cancel">Cancel</button>
-      <button @click="save">Save</button>
+      <label :class="['type-label', {error: isError('type')}]">Type *</label>
+      <md-radio
+        v-for="t in types"
+        v-model="type"
+        :key="t"
+        :value="t"
+      >
+        {{t}}
+      </md-radio>
+      <br />
+      <md-radio v-model="type" value="other">
+        <md-field class="other-type-field">
+          <label>Other</label>
+          <md-input v-model="otherType"></md-input>
+        </md-field>
+      </md-radio>
+    </div>
+    <md-checkbox v-model="requiresInvitation">Requires invitation</md-checkbox>
+    <md-field>
+      <label>Description</label>
+      <md-textarea v-model="description"></md-textarea>
+      <span class="md-helper-text">Add a description of the event.</span>
+    </md-field>
+    <div>
+      <md-button class="md-accent" @click="cancel">Cancel</md-button>
+      <md-button class="md-primary" @click="save">Save</md-button>
     </div>
   </form>
 </template>
@@ -95,14 +90,21 @@ export default {
     };
   },
   methods: {
+    formatDate (date) {
+      if (!date) return '';
+      let year = date.getFullYear();
+      let month = String(date.getMonth() + 1).padStart(2, '0');
+      let day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    },
     cancel () {
       this.onCancel();
     },
     save () {
       this.errors = this.onSave({
         name: this.name,
-        startDate: this.startDate,
-        endDate: this.endDate,
+        startDate: this.formatDate(this.startDate),
+        endDate: this.formatDate(this.endDate),
         location: this.location,
         type: this.type === 'other' ? this.otherType : this.type,
         requiresInvitation: this.requiresInvitation,
@@ -122,36 +124,28 @@ export default {
   form {
     text-align: left;
     max-width: 1024px;
+    min-width: 600px;
 
     .error-message {
       color: red;
     }
 
-    label {
+    .type-label {
       display: block;
-      margin-top: 20px;
-
-      &:first-child {
-        margin-top: 0;
-      }
+      font-size: 16px;
+      color: #2c3e50;
 
       &.error {
         color: red;
-
-        > input,
-        > select,
-        > textarea {
-          border-color: red;
-        }
-      }
-
-      > span {
-        display: inline-block;
       }
     }
 
     button + button {
       margin-left: 20px;
+    }
+
+    .other-type-field {
+      top: -30px;
     }
   }
 </style>
