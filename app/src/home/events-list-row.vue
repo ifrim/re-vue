@@ -1,18 +1,23 @@
 <template>
   <div class="event-row">
-    <div class="event-name">{{event.name}}</div>
+    <div class="event-name">{{ event.name }}</div>
     <div class="event-subtitle">
-      <span>From <b>{{event.startDate | date}}</b> to <b>{{event.endDate | date}}</b></span>
-      <span>location <b>{{event.location}}</b></span>
-      <span>type <b>{{event.type}}</b></span>
+      <span>{{ $t('from') }}: <b>{{ event.startDate | date(locale) }}</b> {{ $t('to') }}: <b>{{ event.endDate | date(locale) }}</b></span>
+      <span>{{ $t('location') }}: <b>{{ event.location }}</b></span>
+      <span>{{ $t('type') }}: <b>{{ $t(event.type.toLowerCase()) }}</b></span>
     </div>
-    <div class="event-requires-invitation" v-if="event.requiresInvitation">It requires invitation.</div>
-    <div class="event-description">{{event.description}}</div>
+    <div class="event-requires-invitation" v-if="event.requiresInvitation">{{ $t('it requires invitation') }}</div>
+    <div class="event-description">{{ event.description }}</div>
   </div>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+      locale: this.$i18n.locale
+    };
+  },
   props: ['event']
 };
 </script>
@@ -40,6 +45,7 @@ export default {
       font-size: 14px;
       color: gray;
       text-align: left;
+      text-transform: capitalize;
 
       > b {
         color: navy;

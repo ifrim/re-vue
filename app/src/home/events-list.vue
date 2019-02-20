@@ -1,29 +1,29 @@
 <template>
   <div class="events-list">
-    <h1>Events</h1>
+    <h1>{{ $t('events') }}</h1>
     <div class="filters">
-      <span class="title">Filters</span>
+      <span class="title">{{ $t('filters') }}</span>
       <div>
-        <label>Location</label>
+        <label>{{ $t('location') }}</label>
         <select v-model="location">
-          <option value="">Any</option>
+          <option value="">{{ capitalize($t('any')) }}</option>
           <option
             v-for="loc in locations"
             :value="loc"
             :key="loc"
           >
-            {{loc}}
+            {{ loc }}
           </option>
         </select>
-        <label>Type</label>
+        <label>{{ capitalize($t('type')) }}</label>
         <select v-model="type">
-          <option value="">Any</option>
+          <option value="">{{ capitalize($t('any')) }}</option>
           <option
             v-for="t in types"
             :value="t"
             :key="t"
           >
-            {{t}}
+            {{ capitalize($t(t.toLowerCase())) }}
           </option>
         </select>
       </div>
@@ -38,6 +38,7 @@
 
 <script>
 import EventsListRow from './events-list-row.vue';
+import { capitalize } from '../commons/utils/_.js';
 
 export default {
   components: {
@@ -45,6 +46,7 @@ export default {
   },
   data () {
     return {
+      capitalize,
       location: '',
       type: '',
       types: [...new Set(this.events.map(e => e.type))]
@@ -63,25 +65,33 @@ export default {
 </script>
 
 <style scoped lang="less">
-.filters {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-top: 1px dotted blue;
-  border-bottom: 1px dotted blue;
-  margin-bottom: 20px;
-
-  > .title {
-    font-weight: bold;
+.events-list {
+  h1,
+  label {
+    text-transform: capitalize;
   }
 
-  label {
-    margin-left: 30px;
+  .filters {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-top: 1px dotted blue;
+    border-bottom: 1px dotted blue;
+    margin-bottom: 20px;
 
-    + select {
-      margin-left: 8px;
+    > .title {
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+
+    label {
+      margin-left: 30px;
+
+      + select {
+        margin-left: 8px;
+      }
     }
   }
 }

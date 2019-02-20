@@ -1,48 +1,54 @@
 import { THOUSAND_SEPARATOR } from '../state/static-data.js';
+import i18n from '../commons/utils/i18n.js';
+import { capitalize } from '../commons/utils/_.js';
 
 export function validate (data) {
   let messages = new Set();
   let items = new Set();
 
   if (!isSet(data.name)) {
-    messages.add('"Name" field is required.');
+    messages.add(t('field is required', { fieldName: i18n.t('name') }));
     items.add('name');
   }
 
   if (!isSet(data.location)) {
-    messages.add('"Location" field is required.');
+    messages.add(t('field is required', { fieldName: i18n.t('location') }));
     items.add('location');
   }
 
   if (!isSet(data.startDate)) {
-    messages.add('"Start Date" field is required.');
+    messages.add(t('field is required', { fieldName: i18n.t('start date') }));
     items.add('startDate');
   } else if (!isValidDate(data.startDate)) {
-    messages.add('"Start Date" is not a valid date.');
+    messages.add(t('not a valid date', { fieldName: i18n.t('start date') }));
     items.add('startDate');
   }
 
   if (!isSet(data.endDate)) {
-    messages.add('"End Date" field is required.');
+    messages.add(t('field is required', { fieldName: i18n.t('end date') }));
     items.add('endDate');
   } else if (!isValidDate(data.endDate)) {
-    messages.add('"End Date" is not a valid date.');
+    messages.add(t('not a valid date', { fieldName: i18n.t('end date') }));
     items.add('endDate');
   }
 
   if (new Date(data.startDate) > new Date(data.endDate)) {
-    messages.add('"Start Date" must be before "End Date".');
+    messages.add(t('field1 before field2', { fieldName1: i18n.t('start date'), fieldName2: i18n.t('end date') }));
     items.add('startDate');
     items.add('endDate');
   }
 
   if (!isSet(data.type)) {
-    messages.add('"Type" field is required.');
+    messages.add(t('field is required', { fieldName: i18n.t('type') }));
     items.add('type');
   }
 
   return messages.size ? { messages, items } : null;
 };
+
+function t (str, payload) {
+  return capitalize(i18n.t(str, payload));
+}
 
 function isSet (value) {
   return [undefined, null, ''].every(v => value !== v);

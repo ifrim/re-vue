@@ -1,5 +1,5 @@
 <template>
-  <form novalidate="novalidate">
+  <form class="create-event-form" novalidate="novalidate">
     <div
       class="errors"
       v-if="errors"
@@ -9,71 +9,67 @@
         v-for="error in errors.messages"
         :key="error"
       >
-        {{error}}
+        {{ error }}
       </div>
     </div>
     <md-field :class="['md-required', {'md-invalid': isError('name')}]">
-      <label>Name</label>
+      <label>{{ $t('name') }}</label>
       <md-input v-model="name"></md-input>
     </md-field>
     <md-field :class="['md-required', {'md-invalid': isError('location')}]">
-      <label for="location">Location</label>
+      <label for="location">{{ $t('location') }}</label>
       <md-select v-model="location">
-        <md-option value="">Select&hellip;</md-option>
+        <md-option value="">{{ $t('select') }}&hellip;</md-option>
         <md-option
           v-for="loc in locations"
           :value="loc"
           :key="loc"
         >
-          {{loc}}
+          {{ loc }}
         </md-option>
       </md-select>
     </md-field>
     <md-datepicker v-model="startDate" :class="['md-required', {'md-invalid': isError('startDate')}]">
-      <label>Start date</label>
+      <label>{{ $t('start date') }}</label>
     </md-datepicker>
     <md-datepicker v-model="endDate" :class="['md-required', {'md-invalid': isError('endDate')}]">
-      <label>End date</label>
+      <label>{{ $t('end date') }}</label>
     </md-datepicker>
     <div>
-      <label :class="['type-label', {error: isError('type')}]">Type *</label>
+      <label :class="['type-label', {error: isError('type')}]">{{ $t('type') }} *</label>
       <md-radio
         v-for="t in types"
         v-model="type"
         :key="t"
         :value="t"
       >
-        {{t}}
+        {{ $t(t.toLowerCase()) }}
       </md-radio>
       <br />
       <md-radio v-model="type" value="other">
         <md-field class="other-type-field">
-          <label>Other</label>
+          <label>{{ $t('other') }}</label>
           <md-input v-model="otherType"></md-input>
         </md-field>
       </md-radio>
     </div>
-    <md-checkbox v-model="requiresInvitation">Requires invitation</md-checkbox>
+    <md-checkbox v-model="requiresInvitation">{{ $t('requires invitation') }}</md-checkbox>
     <md-field>
-      <label>Description</label>
+      <label>{{ $t('description') }}</label>
       <md-textarea v-model="description"></md-textarea>
-      <span class="md-helper-text">Add a description of the event.</span>
+      <span class="md-helper-text">{{ $t('add a description of the event') }}</span>
     </md-field>
     <div>
-      <md-button class="md-accent" @click="cancel">Cancel</md-button>
-      <md-button class="md-primary" @click="save">Save</md-button>
+      <md-button class="md-accent" @click="cancel">{{ $t('cancel') }}</md-button>
+      <md-button class="md-primary" @click="save">{{ $t('save') }}</md-button>
     </div>
   </form>
 </template>
 
 <script>
 import { EVENT_TYPES, locations } from '../state/static-data.js';
-import FormFieldRequired from '../commons/components/form-field-required.vue';
 
 export default {
-  components: {
-    FormFieldRequired
-  },
   data () {
     return {
       name: '',
@@ -120,14 +116,18 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-  form {
+<style lang="less">
+  .create-event-form {
     text-align: left;
     max-width: 1024px;
     min-width: 600px;
 
     .error-message {
       color: red;
+    }
+
+    label {
+      text-transform: capitalize;
     }
 
     .type-label {

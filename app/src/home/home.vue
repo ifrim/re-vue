@@ -4,10 +4,13 @@
       v-if="notification"
       :type="notification.type"
     >
-      {{notification.message}}
+      {{ notification.message }}
     </Notification>
     <header>
-      <button @click="goToCreate">New Event</button>
+      <button @click="goToCreate">{{ $t('new event') }}</button>
+      <select v-model="locale">
+        <option v-for="l in locales" :key="l">{{ l }}</option>
+      </select>
     </header>
     <EventsList
       :events="events"
@@ -19,6 +22,7 @@
 <script>
 import { mapState } from 'vuex';
 import { locations } from '../state/static-data.js';
+import locales from '../i18n/index.js';
 import EventsList from './events-list.vue';
 import Notification from '../commons/components/notification.vue';
 
@@ -29,7 +33,9 @@ export default {
   },
   data () {
     return {
-      locations
+      locations,
+      locales: Object.keys(locales),
+      locale: this.$i18n.locale
     };
   },
   methods: {
@@ -37,7 +43,12 @@ export default {
       this.$router.push('create');
     }
   },
-  computed: mapState(['events', 'notification'])
+  computed: mapState(['events', 'notification']),
+  watch: {
+    locale (lang) {
+      this.$i18n.locale = lang;
+    }
+  }
 };
 </script>
 
@@ -49,6 +60,17 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+
+    button {
+      text-transform: capitalize;
+    }
+
+    select {
+      height: 30px;
+      margin-left: 30px;
+      font-size: 20px;
+      font-weight: bold;
+    }
   }
 }
 </style>

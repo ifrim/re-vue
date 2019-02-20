@@ -1,6 +1,6 @@
 <template>
   <div class="create-event-page">
-    <h1>Create Event</h1>
+    <h1>{{ $t('create event') }}</h1>
     <CreateEventForm
       :on-save="onSave"
       :on-cancel="onCancel"
@@ -29,7 +29,7 @@ export default {
       if (errors) return errors;
       this.addEvent(data);
       this.goToHome();
-      this.notify({ message: 'Event added successfully!', type: NOTIFICATION.SUCCESS });
+      this.notify({ message: this.$i18n.t('event added successfully'), type: NOTIFICATION.SUCCESS });
     },
     onCancel () {
       this.goToHome();
@@ -43,5 +43,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  > h1 {
+    text-transform: capitalize;
+  }
 }
 </style>
