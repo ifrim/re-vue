@@ -16,3 +16,4 @@ npm run serve
 - [the master branch](https://github.com/ifrim/re-vue/tree/master/app) uses vue-cli, vue itself with all its concepts (mostly), vue-router
 - [the vuex branch](https://github.com/ifrim/re-vue/tree/vuex/app) introduces vuex for state management, replacing the vanilla js state management from before
 - [the material branch](https://github.com/ifrim/re-vue/tree/material/app) introduces vue-material to build the "create event" form
+- [the i18n branch](https://github.com/ifrim/re-vue/tree/i18n/app) introduces support for i18n to the app
